@@ -9,9 +9,9 @@ import Foundation
 
 class CityViewModel: ObservableObject {
     @Published var cities: [CityModel] = []
-    private var cityService: CityService
+    private var cityService: CityServiceProtocol
 
-    init(cityService: CityService) {
+    init(cityService: CityServiceProtocol) {
         self.cityService = cityService
         Task {
             await self.loadCities()
@@ -26,10 +26,10 @@ class CityViewModel: ObservableObject {
                 self.cities = cities
             }
         } catch let error as CityGenericError {
-//                self.errorMessage = error.localizedDescription
+                self.errorMessage = error.localizedDescription
         } catch {
             await MainActor.run {
-//                self.errorMessage = CityGenericError.errorDefaultMessage.errorMessage
+                self.errorMessage = CityGenericError.errorDefaultMessage.errorMessage
             }
         }
     }
