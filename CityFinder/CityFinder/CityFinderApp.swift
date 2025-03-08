@@ -11,32 +11,29 @@ import SwiftData
 @main
 struct CityFinderApp: App {
     @StateObject private var cityViewModel: CityViewModel
-
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            CityModel.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    let modelContainer: ModelContainer
 
     init() {
-        // Inicializar CityService con el contexto de datos
-        let cityService = CityService(modelContext: sharedModelContainer.mainContext)
+        // Configurar SwiftData
+        let schema = Schema([CityModel.self])
+        modelContainer = try! ModelContainer(for: schema)
+        let modelContext = modelContainer.mainContext
 
-        // Crear el ViewModel con el servicio inyectado
+        // Configurar servicio
+        #if DEBUG
+        // Uso de Mock para previews
+        let cityService: CityServiceProtocol = CityServiceMock()
+        #else
+        // Uso de servicio
+        let cityService: CityServiceProtocol = CityService(modelContext: modelContext)
+        #endif
         _cityViewModel = StateObject(wrappedValue: CityViewModel(cityService: cityService))
     }
 
     var body: some Scene {
         WindowGroup {
             HomeScreen(viewModel: cityViewModel)
-                .modelContainer(sharedModelContainer)
+                .modelContainer(modelContainer)
         }
     }
 }

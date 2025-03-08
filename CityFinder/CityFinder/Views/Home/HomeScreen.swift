@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @ObservedObject var viewModel: CityViewModel
+    @ObservedObject var cityViewModel: CityViewModel
 
     init(viewModel: CityViewModel) {
-        self.viewModel = viewModel
+        self.cityViewModel = viewModel
     }
 
     var body: some View {
-        LazyVStack {
-            ForEach(viewModel.cities) { city in
-                Text("Ciudad:\(city.name)")
+        VStack {
+            if cityViewModel.cities.isEmpty {
+                Text("Loading...")
+            } else {
+                List(cityViewModel.cities) { city in
+                    Text(city.name)
+                }
             }
         }
+        .task {
+            await cityViewModel.loadCities()
+        }
     }
+}
+#Preview {
+    HomeScreen(viewModel: CityViewModel(cityService: CityServiceMock()))
 }

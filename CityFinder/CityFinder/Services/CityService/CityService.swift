@@ -8,9 +8,12 @@
 import Foundation
 import SwiftData
 
+protocol CityServiceProtocol {
+    func fetchCities() async throws -> [CityModel]
+}
 
 @Observable
-class CityService {
+class CityService: CityServiceProtocol {
     private var cache: [CityModel]?
     private let modelContext: ModelContext
 
