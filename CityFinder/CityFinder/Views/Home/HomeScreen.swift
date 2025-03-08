@@ -10,25 +10,13 @@ import SwiftUI
 struct HomeScreen: View {
     @ObservedObject var cityViewModel: CityViewModel
 
-    init(viewModel: CityViewModel) {
-        self.cityViewModel = viewModel
-    }
-
     var body: some View {
-        VStack {
-            if cityViewModel.cities.isEmpty {
-                Text("Loading...")
-            } else {
-                List(cityViewModel.cities) { city in
-                    Text(city.name)
-                }
-            }
-        }
-        .task {
-            await cityViewModel.loadCities()
+        Group {
+            CityListView(cityViewModel: cityViewModel)
         }
     }
 }
+
 #Preview {
-    HomeScreen(viewModel: CityViewModel(cityService: CityServiceMock()))
+    HomeScreen(cityViewModel: CityViewModel(cityService: CityServiceMock()))
 }

@@ -32,7 +32,7 @@ struct CityFinderApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeScreen(viewModel: cityViewModel)
+            HomeScreen(cityViewModel: cityViewModel)
                 .modelContainer(modelContainer)
         }
     }

@@ -25,11 +25,12 @@ class CityService: CityServiceProtocol {
         let descriptor = FetchDescriptor<CityModel>()
 
         // Asegurar que la consulta se hace en el hilo correcto
-        let storedCities = try await MainActor.run {
+        let storedCities = await MainActor.run {
             try? modelContext.fetch(descriptor)
         }
 
         if let storedCities, !storedCities.isEmpty {
+            print("Cities: ", storedCities)
             return storedCities
         }
 
