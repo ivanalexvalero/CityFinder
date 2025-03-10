@@ -15,6 +15,8 @@ struct CityFinderConstants {
     static let cities = "Ciudades"
     static let promptSearch = "Buscar ciudades..."
     static let loadingProgress = "Loading cities..."
+    static let moreInfoAbout = "Mas info sobre"
+    static let emptyMapText = "Selecciona una ciudad para ver en el mapa"
 }
 
 struct Constants {

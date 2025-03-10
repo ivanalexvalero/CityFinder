@@ -14,13 +14,11 @@ struct CityRowView: View {
 
     var body: some View {
         HStack {
-            Button(action: selectCity) {
-                VStack(alignment: .leading) {
-                    CityFinderText(text: "\(city.name), \(city.country)")
-                        .font(.headline)
-                    CityFinderText(text: "\(CityFinderConstants.longitude.replacingOccurrences(of: Constants.placeholder, with: "\(city.lon)")), \(CityFinderConstants.latitude.replacingOccurrences(of: Constants.placeholder, with: "\(city.lat)"))")
-                        .font(.subheadline)
-                }
+            VStack(alignment: .leading) {
+                CityFinderText(text: "\(city.name), \(city.country)")
+                    .font(.headline)
+                CityFinderText(text: "\(CityFinderConstants.longitude.replacingOccurrences(of: Constants.placeholder, with: "\(city.lon)")), \(CityFinderConstants.latitude.replacingOccurrences(of: Constants.placeholder, with: "\(city.lat)"))")
+                    .font(.subheadline)
             }
             .tint(.black)
 
@@ -34,6 +32,10 @@ struct CityRowView: View {
                 Image(systemName: city.isFavorite ? "heart.fill" : "heart")
                     .foregroundColor(city.isFavorite ? .red : .gray)
             }
+            .buttonStyle(PlainButtonStyle())
+        }
+        .onTapGesture {
+            selectCity()
         }
         .padding(.horizontal)
     }

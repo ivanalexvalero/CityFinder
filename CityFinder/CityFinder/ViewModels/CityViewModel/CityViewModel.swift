@@ -85,4 +85,8 @@ class CityViewModel: ObservableObject {
             error.localizedDescription
         }
     }
+
+    func updateOrientation(isLandscape: Bool) {
+        self.isLandscape = isLandscape
+    }
 }
