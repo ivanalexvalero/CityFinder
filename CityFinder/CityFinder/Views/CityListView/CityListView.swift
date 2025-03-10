@@ -6,58 +6,47 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CityListView: View {
     @ObservedObject var cityViewModel: CityViewModel
-    @State private var showAlert = false
+    @State private var showingFavorites = false
 
     init(cityViewModel: CityViewModel) {
         self.cityViewModel = cityViewModel
     }
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                if cityViewModel.isLoading {
-                    ProgressView(CityFinderConstants.loadingProgress)
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .padding()
-                } else {
-                    LazyVStack(alignment: .leading, spacing: 10) {
-                        // Made use of LazyVStack: more efficient in terms of memory usage and rendering times
-                        ForEach(cityViewModel.filteredCities) { city in
-                            Button(action: {
-                                cityViewModel.selectedCity = city
-                            }) {
-                                VStack(alignment: .leading) {
-                                    CityFinderText(text: "\(city.name), \(city.country)")
-                                        .font(.headline)
-                                    CityFinderText(text: "\(CityFinderConstants.longitude.replacingOccurrences(of: Constants.placeholder, with: "\(city.lon)")), \(CityFinderConstants.latitude.replacingOccurrences(of: Constants.placeholder, with: "\(city.lat)"))")
-                                        .font(.subheadline)
-                                }
-                            }
-                            .accessibilityIdentifier("city-row-\(city.name)")
-                        }
-                    }
-                    .padding(.leading, 20)
-                    .tint(.black)
-                }
+        NavigationStack {
+            List(showingFavorites ? cityViewModel.filteredCities.filter { $0.isFavorite } : cityViewModel.filteredCities) { city in
+                CityRowView(
+                        city: city,
+                        toggleFavorite: { cityViewModel.toggleFavorite(for: city) },
+                        selectCity: { cityViewModel.selectedCity = city }
+                    )
             }
             .searchable(text: $cityViewModel.filter, prompt: CityFinderConstants.promptSearch)
             .navigationTitle(CityFinderConstants.cities)
             .toolbarBackground(.white, for: .navigationBar)
-            .onChange(of: cityViewModel.errorMessage) {
-                self.showAlert = cityViewModel.errorMessage != nil
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        withAnimation(.bouncy) {
+                            showingFavorites.toggle()
+                        }
+                    }) {
+                        Image(systemName: showingFavorites ? "heart.fill" : "heart")
+                            .foregroundColor(showingFavorites ? .red : .gray)
+                    }
+                }
             }
-        }
-        .onAppear {
-            Task {
-                await cityViewModel.loadCities()
+            .onAppear {
+                if cityViewModel.cities.isEmpty && !cityViewModel.isLoading {
+                    Task {
+                        await cityViewModel.loadCities()
+                    }
+                }
             }
         }
     }
-}
-
-#Preview {
-    CityListView(cityViewModel: CityViewModel(cityService: CityServiceMock()))
 }

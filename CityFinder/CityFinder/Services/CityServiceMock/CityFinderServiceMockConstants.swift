@@ -1,5 +1,5 @@
 //
-//  CityServiceMockConstants.swift
+//  CityFinderServiceMockConstants.swift
 //  CityFinder
 //
 //  Created by Ivan Alexander Valero on 08/03/2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CityServiceMockConstants {
+struct CityFinderServiceMockConstants {
     static let resouce = "citiesDB"
     static let json = "json"
     static let domainNSError = "MockCityServiceError"

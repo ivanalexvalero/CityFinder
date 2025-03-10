@@ -1,5 +1,5 @@
 //
-//  CityServiceError.swift
+//  NetworkingError.swift
 //  CityFinder
 //
 //  Created by Ivan Alexander Valero on 06/03/2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CityGenericError: Error {
+enum NetworkingError: Error {
     case invalidURL
     case networkError(Error)
     case decodingError(Error)
@@ -15,7 +15,7 @@ enum CityGenericError: Error {
     case errorDefaultMessage
 }
 
-extension CityGenericError {
+extension NetworkingError {
     var errorMessage: String {
         switch self {
         case .invalidURL:

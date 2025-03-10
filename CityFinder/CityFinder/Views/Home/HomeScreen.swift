@@ -17,6 +17,3 @@ struct HomeScreen: View {
     }
 }
 
-#Preview {
-    HomeScreen(cityViewModel: CityViewModel(cityService: CityServiceMock()))
-}
