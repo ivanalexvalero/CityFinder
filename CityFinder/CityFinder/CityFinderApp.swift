@@ -12,24 +12,31 @@ import SwiftData
 struct CityFinderApp: App {
     @StateObject private var cityViewModel: CityViewModel
     let modelContainer: ModelContainer
-
+    
     init() {
         // Configurar SwiftData
         let schema = Schema([CityModel.self])
-        modelContainer = try! ModelContainer(for: schema)
+        guard let container = try? ModelContainer(for: schema) else {
+            fatalError("No se pudo inicializar ModelContainer")
+        }
+        
+        self.modelContainer = container
         let modelContext = modelContainer.mainContext
+        let databaseManager = DatabaseManager(modelContext: modelContext)
+        let networkManager = NetworkManager()
 
         // Configurar servicio
-        #if DEBUG
+#if DEBUG
         // Uso de Mock para previews
-        let cityService: CityServiceProtocol = CityServiceMock()
-        #else
+        let cityService: CityFinderServiceProtocol = CityFinderServiceMock()
+#else
         // Uso de servicio
-        let cityService: CityServiceProtocol = CityService(modelContext: modelContext)
-        #endif
-        _cityViewModel = StateObject(wrappedValue: CityViewModel(cityService: cityService))
-    }
+        let cityService: CityFinderServiceProtocol = CityFinderService(databaseManager: databaseManager, networkManager: networkManager)
 
+#endif
+        _cityViewModel = StateObject(wrappedValue: CityViewModel(cityService: cityService, modelContext: modelContext))
+    }
+    
     var body: some Scene {
         WindowGroup {
             HomeScreen(cityViewModel: cityViewModel)

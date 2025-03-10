@@ -15,13 +15,15 @@ final class CityModel: Codable, Identifiable, Equatable {
     @Attribute(.unique) var id: Int
     var lon: Double
     var lat: Double
+    var isFavorite: Bool = false
 
-    init(country: String, name: String, id: Int, lon: Double, lat: Double) {
+    init(country: String, name: String, id: Int, lon: Double, lat: Double, isFavorite: Bool = false) {
         self.country = country
         self.name = name
         self.id = id
         self.lon = lon
         self.lat = lat
+        self.isFavorite = isFavorite
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -35,7 +37,6 @@ final class CityModel: Codable, Identifiable, Equatable {
         let lat: Double
     }
 
-    // Implementación de Codable
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.country = try container.decode(String.self, forKey: .country)
@@ -55,12 +56,7 @@ final class CityModel: Codable, Identifiable, Equatable {
         try container.encode(Coordinates(lon: lon, lat: lat), forKey: .coord)
     }
 
-    // Implementación del protocolo Equatable
     static func == (lhs: CityModel, rhs: CityModel) -> Bool {
-        return lhs.country == rhs.country &&
-               lhs.name == rhs.name &&
-               lhs.id == rhs.id &&
-               lhs.lon == rhs.lon &&
-               lhs.lat == rhs.lat
+        return lhs.id == rhs.id
     }
 }

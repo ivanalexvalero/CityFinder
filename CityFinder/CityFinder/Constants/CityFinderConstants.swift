@@ -1,5 +1,5 @@
 //
-//  CityConstants.swift
+//  CityFinderConstants.swift
 //  CityFinder
 //
 //  Created by Ivan Alexander Valero on 08/03/2025.
@@ -19,4 +19,8 @@ struct CityFinderConstants {
 
 struct Constants {
     static let placeholder = "<PLACEHOLDER>"
+}
+
+struct CityFinderErrorConstants {
+    static let loadCitiesErrorMessage = "Error al cargar las ciudades"
 }
