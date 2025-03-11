@@ -20,7 +20,6 @@ struct HomeScreen: View {
         orientationManager.handleOrientation { isLandscape in
             Group {
                 if isLandscape {
-                    // Landscape
                     HStack {
                         VStack {
                             CityListView(cityViewModel: cityViewModel)
@@ -28,18 +27,17 @@ struct HomeScreen: View {
                                 .padding(.horizontal, 2)
                         }
                         if let selectedCity = cityViewModel.selectedCity {
-                            CityMapView(city: selectedCity)
+                            CityMapScreen(city: selectedCity)
                                 .frame(width: UIScreen.main.bounds.width * 0.5)
                         } else {
-                            CityFinderText(text: CityFinderConstants.emptyMapText)
+                            CityFinderText(text: CityFinderConstants.emptyMapText, font: CityFinderFonts.robotoRegular30)
                                 .frame(width: UIScreen.main.bounds.width * 0.5)
                         }
                     }
                 } else {
-                    // Portrait
                     CityListView(cityViewModel: cityViewModel)
                         .sheet(item: $cityViewModel.selectedCity) { city in
-                            CityMapView(city: city)
+                            CityMapScreen(city: city)
                         }
                 }
             }

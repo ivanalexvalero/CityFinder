@@ -20,10 +20,11 @@ struct CityListView: View {
         NavigationStack {
             List(showingFavorites ? cityViewModel.filteredCities.filter { $0.isFavorite } : cityViewModel.filteredCities) { city in
                 CityRowView(
-                        city: city,
-                        toggleFavorite: { cityViewModel.toggleFavorite(for: city) },
-                        selectCity: { cityViewModel.selectedCity = city }
-                    )
+                    city: city,
+                    toggleFavorite: { cityViewModel.toggleFavorite(for: city) },
+                    selectCity: { cityViewModel.selectedCity = city }
+                )
+                .accessibilityIdentifier("City_\(city.name)_Row")
             }
             .searchable(text: $cityViewModel.filter, prompt: CityFinderConstants.promptSearch)
             .navigationTitle(CityFinderConstants.cities)
@@ -38,6 +39,7 @@ struct CityListView: View {
                         Image(systemName: showingFavorites ? "heart.fill" : "heart")
                             .foregroundColor(showingFavorites ? .red : .gray)
                     }
+                    .accessibilityIdentifier("ShowFavoritesButton")
                 }
             }
             .onAppear {
@@ -48,5 +50,7 @@ struct CityListView: View {
                 }
             }
         }
+        .accessibilityIdentifier("CityListView")
     }
 }
+

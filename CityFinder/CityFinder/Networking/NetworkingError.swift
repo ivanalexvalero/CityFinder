@@ -12,7 +12,6 @@ enum NetworkingError: Error {
     case networkError(Error)
     case decodingError(Error)
     case unknownError
-    case errorDefaultMessage
 }
 
 extension NetworkingError {
@@ -26,8 +25,6 @@ extension NetworkingError {
             return "A decoding error occurred"
         case .unknownError:
             return "An unknown error occurred"
-        case .errorDefaultMessage:
-            return "An error occurred"
         }
     }
 }

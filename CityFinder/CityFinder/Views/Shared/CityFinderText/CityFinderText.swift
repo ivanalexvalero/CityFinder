@@ -9,8 +9,10 @@ import SwiftUI
 
 struct CityFinderText: View {
     var text: String
+    var font: Font
 
     var body: some View {
         Text(text)
+            .font(font)
     }
 }

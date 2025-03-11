@@ -13,11 +13,13 @@ class NetworkManager {
             throw NetworkingError.invalidURL
         }
         
-        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 10)
+        let request = URLRequest(url: url,
+                                 cachePolicy: .returnCacheDataElseLoad,
+                                 timeoutInterval: 10)
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
-
+            
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 throw NetworkingError.networkError(URLError(.badServerResponse))
             }
