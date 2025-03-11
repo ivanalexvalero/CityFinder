@@ -1,5 +1,5 @@
 //
-//  CityMapView.swift
+//  CityMapScreen.swift
 //  CityFinder
 //
 //  Created by Ivan Alexander Valero on 09/03/2025.
@@ -8,12 +8,12 @@
 import SwiftUI
 import MapKit
 
-struct CityMapView: View {
+struct CityMapScreen: View {
     var city: CityModel
-
+    
     @State private var region: MKCoordinateRegion
     @State private var showInfoSheet = false
-
+    
     init(city: CityModel) {
         self.city = city
         self._region = State(initialValue: MKCoordinateRegion(
@@ -21,10 +21,9 @@ struct CityMapView: View {
             span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         ))
     }
-
+    
     var body: some View {
         GeometryReader { geometry in
-            // calculo con geometry para dividir la pantalla
             ZStack {
                 Map(coordinateRegion: $region)
                     .accessibilityIdentifier("CityMapView_\(city.name)")
@@ -35,7 +34,7 @@ struct CityMapView: View {
                         updateRegion(for: newCity)
                     }
                     .presentationCornerRadius(30.0)
-
+                
                 VStack {
                     if geometry.size.width < geometry.size.height {
                         Capsule()
@@ -49,27 +48,26 @@ struct CityMapView: View {
                     } label: {
                         CityFinderText(text: "\(CityFinderConstants.moreInfoAbout) \(city.name)", font: CityFinderFonts.robotoRegular14)
                     }
-                    .accessibilityIdentifier("MoreInfoButton_\(city.name)") // Agregado para el botón de más información
+                    .accessibilityIdentifier("MoreInfoButton_\(city.name)")
                     .buttonStyle(.borderedProminent)
                     .padding()
                     .fullScreenCover(isPresented: $showInfoSheet) {
                         NavigationView {
-                            CityDetailView(city: city)
+                            CityDetailScreen(cityModel: city)
                                 .presentationDetents([.fraction(0.5)])
-                                .accessibilityIdentifier("CityDetailView_\(city.name)") // Agregado para identificar la vista de detalles
+                                .accessibilityIdentifier("CityDetailView_\(city.name)")
                         }
                     }
                 }
             }
         }
     }
-
+    
     private func updateRegion(for city: CityModel) {
         region.center = CLLocationCoordinate2D(latitude: city.lat, longitude: city.lon)
     }
 }
 
-
 #Preview {
-    CityMapView(city: CityModel.cities)
+    CityMapScreen(city: CityModel.cities)
 }

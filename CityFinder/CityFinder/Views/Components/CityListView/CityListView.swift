@@ -24,7 +24,7 @@ struct CityListView: View {
                     toggleFavorite: { cityViewModel.toggleFavorite(for: city) },
                     selectCity: { cityViewModel.selectedCity = city }
                 )
-                .accessibilityIdentifier("City_\(city.name)_Row") // Identificador para cada fila de ciudad
+                .accessibilityIdentifier("City_\(city.name)_Row")
             }
             .searchable(text: $cityViewModel.filter, prompt: CityFinderConstants.promptSearch)
             .navigationTitle(CityFinderConstants.cities)
@@ -39,7 +39,7 @@ struct CityListView: View {
                         Image(systemName: showingFavorites ? "heart.fill" : "heart")
                             .foregroundColor(showingFavorites ? .red : .gray)
                     }
-                    .accessibilityIdentifier("ShowFavoritesButton") // Identificador del botón de mostrar favoritos
+                    .accessibilityIdentifier("ShowFavoritesButton")
                 }
             }
             .onAppear {
