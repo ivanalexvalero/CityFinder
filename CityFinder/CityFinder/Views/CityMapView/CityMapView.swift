@@ -26,14 +26,16 @@ struct CityMapView: View {
         GeometryReader { geometry in
             // calculo con geometry para dividir la pantalla
             ZStack {
-                    Map(coordinateRegion: $region)
-                        .navigationTitle("\(city.name), \(city.country)")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .padding(.top, 25)
-                        .onChange(of: city) { newCity in
-                            updateRegion(for: newCity)
-                        }
-                        .presentationCornerRadius(30.0)
+                Map(coordinateRegion: $region)
+                    .accessibilityIdentifier("CityMapView_\(city.name)")
+                    .navigationTitle("\(city.name), \(city.country)")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .padding(.top, 25)
+                    .onChange(of: city) { newCity in
+                        updateRegion(for: newCity)
+                    }
+                    .presentationCornerRadius(30.0)
+
                 VStack {
                     if geometry.size.width < geometry.size.height {
                         Capsule()
@@ -45,10 +47,18 @@ struct CityMapView: View {
                     Button {
                         showInfoSheet.toggle()
                     } label: {
-                        CityFinderText(text: "\(CityFinderConstants.moreInfoAbout) \(city.name)")
+                        CityFinderText(text: "\(CityFinderConstants.moreInfoAbout) \(city.name)", font: CityFinderFonts.robotoRegular14)
                     }
+                    .accessibilityIdentifier("MoreInfoButton_\(city.name)") // Agregado para el botón de más información
                     .buttonStyle(.borderedProminent)
                     .padding()
+                    .fullScreenCover(isPresented: $showInfoSheet) {
+                        NavigationView {
+                            CityDetailView(city: city)
+                                .presentationDetents([.fraction(0.5)])
+                                .accessibilityIdentifier("CityDetailView_\(city.name)") // Agregado para identificar la vista de detalles
+                        }
+                    }
                 }
             }
         }
@@ -58,6 +68,7 @@ struct CityMapView: View {
         region.center = CLLocationCoordinate2D(latitude: city.lat, longitude: city.lon)
     }
 }
+
 
 #Preview {
     CityMapView(city: CityModel.cities)

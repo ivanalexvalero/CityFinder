@@ -17,6 +17,8 @@ struct CityFinderConstants {
     static let loadingProgress = "Loading cities..."
     static let moreInfoAbout = "Mas info sobre"
     static let emptyMapText = "Selecciona una ciudad para ver en el mapa"
+    static let citiesDetails = "Detalles de la Ciudad"
+    static let closeView = "xmark.circle.fill"
 }
 
 struct Constants {
