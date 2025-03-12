@@ -29,7 +29,7 @@ struct CityDetailScreen: View {
                     Button(action: {
                         dismiss()
                     }) {
-                        Image(systemName: CityFinderConstants.closeView)
+                        Image(systemName: CityFinderIconConstants.closeViewIcon)
                             .foregroundColor(.red)
                             .font(.title3)
                     }

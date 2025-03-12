@@ -25,11 +25,11 @@ struct CityCardView: View {
             Divider()
                 .padding(.horizontal, 40)
             
-            CityInfoRowCardView(icon: "mappin.and.ellipse",
+            CityInfoRowCardView(icon: CityFinderIconConstants.lonIcon,
                                 text: "\(CityFinderConstants.longitude.replacingOccurrences(of: Constants.placeholder, with: " \(cityModel.lon)"))",
                                 accessibilityId: "cityLongitudeText")
             
-            CityInfoRowCardView(icon: "location.fill",
+            CityInfoRowCardView(icon: CityFinderIconConstants.latIcon,
                                 text: "\(CityFinderConstants.longitude.replacingOccurrences(of: Constants.placeholder, with: " \(cityModel.lat)"))",
                                 accessibilityId: "cityLatitudeText")
         }
