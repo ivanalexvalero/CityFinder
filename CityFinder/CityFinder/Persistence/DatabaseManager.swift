@@ -17,7 +17,7 @@ class DatabaseManager {
 
     func fetchCities() async throws -> [CityModel] {
         return try await MainActor.run {
-            let descriptor = FetchDescriptor<CityModel>()
+            let descriptor = FetchDescriptor<CityModel>(sortBy: [SortDescriptor(\.name)])
             return try self.modelContext.fetch(descriptor)
         }
     }
