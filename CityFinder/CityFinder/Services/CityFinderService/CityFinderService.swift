@@ -28,7 +28,8 @@ class CityFinderService: CityFinderServiceProtocol {
             return storedCities
         }
         
-        let cities = try await networkManager.fetchCities()
+        var cities = try await networkManager.fetchCities()
+        cities.sort { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
         try await databaseManager.saveCities(cities)
         
         cache = cities
